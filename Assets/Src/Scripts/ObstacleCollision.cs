@@ -12,7 +12,11 @@ namespace YsoCorp {
 
         private void OnTriggerEnter(Collider collision) {
             if (collision.transform.CompareTag("Obstacle") == true) {
-                this.KillPlayer(collision.transform);
+                if (collision.GetComponent<StackManBehaviour>() != null) {
+                    collision.GetComponent<StackManBehaviour>().killStackMan(collision.transform);
+                } else {
+                    this.KillPlayer(collision.transform);
+                }
             } else if (collision.transform.CompareTag("Finish") == true) {
                 this.Finish();
             }

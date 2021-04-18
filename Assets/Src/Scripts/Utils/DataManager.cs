@@ -8,6 +8,8 @@ namespace YsoCorp {
         private static string PSEUDO = "PSEUDO";
         private static string LEVEL = "LEVEL";
         private static string NUMCHARACTER = "NUMCHARACTER";
+        private static int Coin = 0;
+        private static bool  []Skin = new bool[2]; 
 
         private static int DEFAULT_LEVEL = 1;
 
@@ -49,6 +51,29 @@ namespace YsoCorp {
         public bool IsUnlockNumCharacter(int num) {
             this.UnlockNumCharacter(0);
             return this.GetInt(NUMCHARACTER + num, 0) == 1;
+        }
+
+        // Coin
+
+        public void setCoin(int _coin)
+        {
+            Coin += _coin;
+        }
+        public int getCoin()
+        {
+            return Coin;
+        }
+
+        //skin
+
+        public bool getSkint(int i)
+        {
+            return Skin[i];
+        }
+
+        public void setSkin(bool check, int i)
+        {
+            Skin[i] = check;
         }
 
     }

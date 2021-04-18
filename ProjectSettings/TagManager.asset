@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - NotRagdoll
+  - Man
   layers:
   - Default
   - TransparentFX

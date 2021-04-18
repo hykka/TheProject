@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using DG.Tweening;
@@ -18,9 +19,13 @@ namespace YsoCorp {
         private static float TELEPORTATION_OFFSET = 1.5f;
         private static float MAX_ANGLE = 25f;
 
+        public float BodyInterval = 2.75f;
+        
         public bool clampRotation;
         public bool slide;
 
+        public List<GameObject> stackMans = new List<GameObject>();
+        public int stackSize = 0;
         private bool _isMoving;
         private Vector3 _slideMove;
         private Animator _animator;
@@ -37,8 +42,15 @@ namespace YsoCorp {
             this._animator = this.GetComponentInChildren<Animator>();
             this._ragdollBehviour = this.GetComponent<RagdollBehaviour>();
             this.isAlive = true;
-
             this.game.onStateChanged += this.Launch;
+        }
+
+        public void addStackMan(GameObject stackMan) {
+            foreach (GameObject man in stackMans) {
+                man.GetComponent<StackManBehaviour>().StackManOnTop(false);
+            }
+            stackMan.GetComponent<StackManBehaviour>().StackManOnTop(true);
+            stackMans.Add(stackMan);
         }
 
         private void Launch(Game.States states) {
