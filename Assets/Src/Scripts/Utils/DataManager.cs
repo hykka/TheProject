@@ -12,14 +12,18 @@ namespace YsoCorp {
         private static string SKINS = "SKINS";
         private static bool []Skin = new bool[3];
 
-        private static int Coin = 10;
+        private static int Coin = 0;
         private static int currentCoin = 0;
 
 
-        private static int DEFAULT_COIN = 50;
+        private static int DEFAULT_COIN = 0;
         private static int DEFAULT_LEVEL = 1;
 
         /***** CUSTOM  *****/
+
+        public void Start() {
+            getCoin();
+        }
 
         // LEVEL
         public int GetLevel() {
@@ -63,13 +67,15 @@ namespace YsoCorp {
 
         public void setCoin(int _coin)
         {
+            Debug.Log("Rajoute de :" + _coin);
             Coin += _coin;
-            this.SetInt(COINS, _coin);
-
+            Debug.Log("Final coin: " + Coin);
+            this.SetInt(COINS, Coin);
         }
         public int getCoin()
         {
             Coin = this.GetInt(COINS, DEFAULT_COIN);
+            Debug.Log("Jai " + Coin + " coins");
             return Coin;
         }
 

@@ -10,16 +10,18 @@ public class ShopMenu : MonoBehaviour
     public YsoCorp.DataManager data;
     public GameObject []skin;
 
-    void Start()
-    {
+    public void UpdateData() {
         Coin.text = data.getCoin().ToString();
         if (data.getSkint(0) == true)
             skin[0].SetActive(false);
         if (data.getSkint(1) == true)
             skin[1].SetActive(false);
-
     }
-    
+
+    void Start()
+    {
+        UpdateData();
+    }
 
     void Update()
     {
@@ -37,7 +39,7 @@ public class ShopMenu : MonoBehaviour
                 data.setSkin(true, 0);
                 skin[0].SetActive(false);
             }
-            else if(value == 30)
+            else if (value == 15)
             {
                 data.setSkin(true, 1);
                 skin[1].SetActive(false);

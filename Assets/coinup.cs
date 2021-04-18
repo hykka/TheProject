@@ -8,6 +8,10 @@ public class coinup : MonoBehaviour
     public GameObject coin;
     private int rotatespeed = 1;
     public AudioSource sound;
+
+    private void Awake() {
+        data = GameObject.Find("DataManager").GetComponent<YsoCorp.DataManager>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         data.addCoin();
