@@ -7,7 +7,6 @@ using DG.Tweening;
 namespace YsoCorp {
 
     public class Player : Movable {
-
         private static float LEFT_LIMIT = -1.5f;
         private static float RIGHT_LIMIT = 1.5f;
         private static float SPEED_ROTATION = 25f;
@@ -72,8 +71,7 @@ namespace YsoCorp {
                 this._isMoving = false;
                 this._animator?.SetBool("Moving", false);
                 this._animator?.SetTrigger("Win");
-                stackMans.Clear();
-                spwnStack.destroySelf();
+
             } else if (states == Game.States.Lose) {
                 this._isMoving = false;
                 stackMans.Clear();

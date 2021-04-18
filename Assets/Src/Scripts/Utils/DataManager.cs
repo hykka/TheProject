@@ -20,11 +20,17 @@ namespace YsoCorp {
         private static int DEFAULT_LEVEL = 1;
 
         /***** CUSTOM  *****/
-
         public void Start() {
             getCoin();
         }
 
+        public void reset() {
+            this.SetInt(LEVEL, DEFAULT_LEVEL);
+            this.SetInt(COINS, 0);
+            this.setSkin(false, 0);
+            this.setSkin(false, 1);
+            this.setSkin(false, 2);
+        }
         // LEVEL
         public int GetLevel() {
             return this.GetInt(LEVEL, DEFAULT_LEVEL);
