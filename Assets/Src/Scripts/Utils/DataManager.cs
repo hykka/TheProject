@@ -8,9 +8,15 @@ namespace YsoCorp {
         private static string PSEUDO = "PSEUDO";
         private static string LEVEL = "LEVEL";
         private static string NUMCHARACTER = "NUMCHARACTER";
-        private static int Coin = 0;
-        private static bool  []Skin = new bool[2]; 
+        private static string COINS = "COINS";
+        private static string SKINS = "SKINS";
+        private static bool []Skin = new bool[3];
 
+        private static int Coin = 10;
+        private static int currentCoin = 0;
+
+
+        private static int DEFAULT_COIN = 50;
         private static int DEFAULT_LEVEL = 1;
 
         /***** CUSTOM  *****/
@@ -58,22 +64,37 @@ namespace YsoCorp {
         public void setCoin(int _coin)
         {
             Coin += _coin;
+            this.SetInt(COINS, _coin);
+
         }
         public int getCoin()
         {
+            Coin = this.GetInt(COINS, DEFAULT_COIN);
             return Coin;
         }
 
         //skin
-
         public bool getSkint(int i)
         {
-            return Skin[i];
+            int tmp = this.GetInt(SKINS + i, Skin[i] ? 1 : 0);
+            return (tmp == 1 ? true : false);
         }
 
         public void setSkin(bool check, int i)
         {
+            this.SetInt(SKINS + i, (check) ? 1 : 0);
             Skin[i] = check;
+        }
+
+        public void addCoin()
+        {
+            currentCoin++;
+        }
+
+        public void endlvl()
+        {
+            setCoin(currentCoin);
+            currentCoin = 0;
         }
 
     }

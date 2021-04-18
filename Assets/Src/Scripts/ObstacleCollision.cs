@@ -3,6 +3,7 @@
 namespace YsoCorp {
 
     public class ObstacleCollision : YCBehaviour {
+        public DataManager data;
 
         private void OnCollisionEnter(Collision collision) {
             if (collision.transform.CompareTag("Obstacle") == true) {
@@ -12,11 +13,7 @@ namespace YsoCorp {
 
         private void OnTriggerEnter(Collider collision) {
             if (collision.transform.CompareTag("Obstacle") == true) {
-                if (collision.GetComponent<StackManBehaviour>() != null) {
-                    collision.GetComponent<StackManBehaviour>().killStackMan(collision.transform);
-                } else {
-                    this.KillPlayer(collision.transform);
-                }
+                this.KillPlayer(collision.transform);
             } else if (collision.transform.CompareTag("Finish") == true) {
                 this.Finish();
             }
@@ -28,6 +25,7 @@ namespace YsoCorp {
         }
 
         private void Finish() {
+            data.endlvl();
             this.game.Win();
         }
 

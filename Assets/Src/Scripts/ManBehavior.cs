@@ -8,41 +8,36 @@ public class ManBehavior : MonoBehaviour
     public Transform spine;
     public GameObject toSpawn;
     private Animator _animator;
+    public Material color;
 
     private bool _turning = false;
     private int _stackToReach = 0;
     private float _bodyInterval = 0.0f;
-    public float playerBackOffset = -0.50f;
 
     void Awake() {
         this._animator = this.GetComponentInChildren<Animator>();
     }
     void Start()
     {
-        
+
     }
 
     void FixedUpdate()
     {
-
         if (this._animator?.GetBool("Climbing") == true) {
-            if (spine.transform.position.y >= (this._bodyInterval * _stackToReach)) {
-                Debug.Log("Spine: " + spine.transform.position.y);
-                Debug.Log("ToReach: " + (this._bodyInterval * _stackToReach).ToString());
-                this._animator?.SetBool("Stop", true);
-                EndClimbing();
-            } else {
-                transform.position = Vector3.Lerp(transform.position, spine.position, 1f);
-            }
+            EndClimbing();            
+            //transform.position = Vector3.Lerp(transform.position, spine.position, 1f);
         }
     }
 
-
     public void EndClimbing() {
+        color = GetComponentInChildren<RandomMaterial>().selected;
         GameObject stackMan = Instantiate(toSpawn, this.transform);
+        stackMan.GetComponent<StackManBehaviour>().changeColor(color);
         stackMan.transform.parent = this.transform.parent;
-        stackMan.transform.rotation = this.transform.parent.rotation;
-        stackMan.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - 0.05f);
+        Transform spawnRef = this.transform.parent.GetComponent<Player>().SpawnRef.transform;
+        stackMan.transform.rotation = new Quaternion(0, 0, 0, 0);//this.transform.parent.rotation;
+        stackMan.transform.position = new Vector3(spawnRef.position.x, this.transform.parent.position.y + (0.88f * _stackToReach), spawnRef.position.z);
         this.transform.parent.GetComponent<Player>().addStackMan(stackMan);
         Destroy(this.gameObject, 0.0f);
     }
@@ -53,8 +48,7 @@ public class ManBehavior : MonoBehaviour
         this._stackToReach = stackSize + 1;
         this._bodyInterval = BodyInterval;
 
-
-        this.transform.position = new Vector3(player.position.x, player.position.y, player.position.z - this.playerBackOffset);
+        //this.transform.position = new Vector3(player.position.x, player.position.y, player.position.z - this.playerBackOffset);
     }
 
     public void activate() {

@@ -15,7 +15,7 @@ namespace YsoCorp {
             this.playerHips.parent.gameObject.SetActive(true);
         }
 
-        public void EnableRagdoll(Transform target) {
+        public void EnableRagdoll(Transform target, bool destroy) {
             this.ragdoll.transform.position = this.transform.position;
             this.ragdoll.SetActive(true);
             this.playerHips.parent.gameObject.SetActive(false);
@@ -23,6 +23,9 @@ namespace YsoCorp {
             this.RotateRagdollBones();
             this.ActivatePhysic();
             this.AddForce(target);
+            if (destroy) {
+                Destroy(this.gameObject, 2f);
+            }
         }
 
         private void AddForce(Transform target) {

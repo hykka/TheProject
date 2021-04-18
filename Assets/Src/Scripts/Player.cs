@@ -20,9 +20,11 @@ namespace YsoCorp {
         private static float MAX_ANGLE = 25f;
 
         public float BodyInterval = 2.75f;
-        
+        public Camera camera;
+        public GameObject SpawnRef;
         public bool clampRotation;
         public bool slide;
+        private spawnstack spwnStack;
 
         public List<GameObject> stackMans = new List<GameObject>();
         public int stackSize = 0;
@@ -43,6 +45,11 @@ namespace YsoCorp {
             this._ragdollBehviour = this.GetComponent<RagdollBehaviour>();
             this.isAlive = true;
             this.game.onStateChanged += this.Launch;
+            updateFov();
+        }
+
+        public void updateFov() {
+            cam.ycCamera.fieldOfView = 60 + (stackSize * 4f);
         }
 
         public void addStackMan(GameObject stackMan) {
@@ -51,18 +58,26 @@ namespace YsoCorp {
             }
             stackMan.GetComponent<StackManBehaviour>().StackManOnTop(true);
             stackMans.Add(stackMan);
+            updateFov();
         }
 
         private void Launch(Game.States states) {
+            spwnStack = GameObject.Find("SpawnStack").GetComponent<spawnstack>();
             if (states == Game.States.Playing) {
+                spwnStack.initlevel();
+
                 this._isMoving = true;
                 this._animator?.SetBool("Moving", true);
             } else if (states == Game.States.Win) {
                 this._isMoving = false;
                 this._animator?.SetBool("Moving", false);
                 this._animator?.SetTrigger("Win");
+                stackMans.Clear();
+                spwnStack.destroySelf();
             } else if (states == Game.States.Lose) {
                 this._isMoving = false;
+                stackMans.Clear();
+                spwnStack.destroySelf();
             }
         }
 
@@ -73,7 +88,15 @@ namespace YsoCorp {
                 this._animator.enabled = true;
                 this._animator.SetBool("Moving", false);
             }
-
+            
+            foreach (GameObject stackMan in stackMans) {
+                stackMan.transform.parent = null;
+                Destroy(stackMan.gameObject);
+            }
+            
+            stackMans.Clear();
+            updateFov();
+            stackSize = 0;
             Transform spot = this.game.map.GetStartingPos();
             this.transform.position = spot.position;
             this.transform.rotation = spot.rotation;
@@ -85,11 +108,19 @@ namespace YsoCorp {
         }
 
         public void Die(Transform killer) {
+            this.killStackMan();
             this.isAlive = false;
             if (this._ragdollBehviour != null) {
-                this._ragdollBehviour.EnableRagdoll(killer);
+                this._ragdollBehviour.EnableRagdoll(killer, false);
                 this.cam.Follow(this._ragdollBehviour.hips);
             }
+        }
+
+        private void killStackMan() {
+            foreach (GameObject stackMan in stackMans) {
+                stackMan.GetComponent<StackManBehaviour>().killStackMan();
+            }
+            stackSize = 0;
         }
 
         private void FixedUpdate() {

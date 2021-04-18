@@ -17,10 +17,10 @@ public class ShopMenu : MonoBehaviour
             skin[0].SetActive(false);
         if (data.getSkint(1) == true)
             skin[1].SetActive(false);
+
     }
     
 
-    // Update is called once per frame
     void Update()
     {
         

@@ -8,7 +8,6 @@ namespace ManStack {
     public class ManCollision : YCBehaviour {
 
         private void OnCollisionEnter(Collision collision) {
-
         }
 
         private void OnTriggerEnter(Collider collision) {
